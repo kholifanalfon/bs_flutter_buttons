@@ -58,7 +58,7 @@ class BsButtonSize {
   static const BsButtonSize btnMd = BsButtonSize(
     padding: EdgeInsets.only(left: 20.0, right: 20.0, top: 10.0, bottom: 10.0),
     fontSize: 12.0,
-    iconSize: 12.0,
+    iconSize: 14.0,
     minimumSize: Size(40.0, 40.0),
   );
 

@@ -21,7 +21,7 @@ packages:
       path: ".."
       relative: true
     source: path
-    version: "1.0.0"
+    version: "1.0.1"
   bs_flutter_responsive:
     dependency: "direct main"
     description:
@@ -35,7 +35,7 @@ packages:
       name: bs_flutter_utils
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.0"
+    version: "1.0.1"
   characters:
     dependency: transitive
     description:

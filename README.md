@@ -50,3 +50,31 @@ To create some button use `BsButton`
   ),
 // ...
 ```
+
+Dropdown buttons
+
+![Alt text](https://raw.githubusercontent.com/kholifanalfon/bs_flutter_buttons/main/screenshot/example.gif "Screenshot Example Buttons")
+
+```dart
+// ...
+  BsDropdownButton(
+    margin: EdgeInsets.only(right: 5.0, left: 450),
+    toggleMenu: (_) => BsButton(
+      onPressed: () => _.toggle(),
+      style: BsButtonStyle.primary,
+      size: BsButtonSize.btnSm,
+      label: Text('Primary'),
+    ),
+    dropdownDirection: Axis.horizontal,
+    dropdownMenu: BsDropdownMenu(
+      children: [
+        BsDropdownItem(child: Text('Action')),
+        BsDropdownItem(child: Text('Another Action')),
+        BsDropdownItem(child: Text('Something else here')),
+        BsDropdownDivider(),
+        BsDropdownItem(child: Text('Separate link')),
+      ],
+    ),
+  )
+// ...
+```
