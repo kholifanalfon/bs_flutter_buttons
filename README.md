@@ -4,6 +4,12 @@
 
 Bootstrap’s custom button styles for actions in forms, dialogs, and more with support for multiple sizes, states, and more.
 
+Feature:
+- 8 button color with 2 style
+- Button icon
+- Button with badge
+- Dropdown buttons
+
 ## Getting Started
 Add the dependency in `pubspec.yaml`:
 
