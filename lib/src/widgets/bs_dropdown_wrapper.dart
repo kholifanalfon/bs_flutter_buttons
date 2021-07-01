@@ -218,7 +218,7 @@ class _BsDropdownWrapperState extends State<BsDropdownWrapper> {
                         height: _overlayHeight == 0 ? null : _overlayHeight,
                         width: _overlayWidth == 0 ? null : _overlayWidth,
                         decoration: BoxDecoration(
-                          color: Colors.white,
+                          color: widget.dropdownMenuStyle.backgroundColor,
                           borderRadius: widget.dropdownMenuStyle.borderRadius,
                           boxShadow: widget.dropdownMenuStyle.boxShadow,
                           border: widget.dropdownMenuStyle.border,

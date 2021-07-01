@@ -1,6 +1,9 @@
-## 1.1.0
+## 1.1.1
 
 * Adding dropdown button
+* Adding dropdown item with disable and active style
+* Adding dropdown header
+* Close dropdown menu when pressed escape
 
 ## 1.0.1
 

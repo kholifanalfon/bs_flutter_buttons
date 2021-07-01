@@ -2,6 +2,7 @@ import 'package:bs_flutter_buttons/bs_flutter_buttons.dart';
 import 'package:bs_flutter_buttons/src/utils/bs_overlay.dart';
 import 'package:bs_flutter_buttons/src/widgets/bs_dropdown_wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class BsDropdownButton extends StatefulWidget {
 
@@ -69,6 +70,11 @@ class _BsDropdownButtonState extends State<BsDropdownButton> {
     else if(!_focusNode.hasFocus) _close();
   }
 
+  void _onKeyPressed(RawKeyEvent event) {
+    if(event.logicalKey == LogicalKeyboardKey.escape)
+      _close();
+  }
+
   void updateState(Function function) {
     if(mounted)
       setState(() {
@@ -78,7 +84,7 @@ class _BsDropdownButtonState extends State<BsDropdownButton> {
 
   void toggle() {
     if(isOpen) _close();
-    else _open();
+    else _focusNode.requestFocus();
   }
 
   void _open() {
@@ -92,7 +98,10 @@ class _BsDropdownButtonState extends State<BsDropdownButton> {
       dropdownDirection: widget.dropdownDirection,
       dropdownMenuStyle: widget.dropdownMenuStyle,
       dropdownMenuSize: widget.dropdownMenuSize,
-    )), () => updateState(() => isOpen = false));
+    )), () => updateState(() {
+      isOpen = false;
+      _focusNode.unfocus();
+    }));
 
     Overlay.of(context)!.insert(overlayEntry.overlayEntry);
 
@@ -102,6 +111,7 @@ class _BsDropdownButtonState extends State<BsDropdownButton> {
   void _close() {
     BsOverlay.removeAll();
 
+    _focusNode.unfocus();
     updateState(() => isOpen = false);
   }
 
@@ -109,10 +119,14 @@ class _BsDropdownButtonState extends State<BsDropdownButton> {
   Widget build(BuildContext context) {
     return CompositedTransformTarget(
       link: _layerLink,
-      child: Container(
-        key: _key,
-        margin: widget.margin,
-        child: widget.toggleMenu(this),
+      child: RawKeyboardListener(
+        focusNode: _focusNode,
+        onKey: _onKeyPressed,
+        child: Container(
+          key: _key,
+          margin: widget.margin,
+          child: widget.toggleMenu(this),
+        ),
       ),
     );
   }

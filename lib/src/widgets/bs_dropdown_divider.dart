@@ -5,16 +5,16 @@ class BsDropdownDivider extends StatelessWidget {
 
   const BsDropdownDivider({
     Key? key,
-    this.border,
+    this.decoration,
   }) : super(key: key);
 
-  final Border? border;
+  final Decoration? decoration;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: BoxDecoration(
-        border: border != null ? border : Border(
+      decoration: decoration != null ? decoration : BoxDecoration(
+        border: Border(
           bottom: BorderSide(color: BsColor.borderColor)
         )
       ),

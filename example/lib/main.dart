@@ -298,12 +298,18 @@ class _MyAppState extends State<MyApp> {
                           suffixIcon: Icons.arrow_drop_down,
                           label: Text('Primary'),
                         ),
+                        dropdownMenuSize: BsDropdownMenuSize(
+                          minWidth: 150,
+                          maxWidth: 300,
+                          minHeight: 150,
+                          maxHeight: 300
+                        ),
                         dropdownMenu: BsDropdownMenu(
                           children: [
+                            BsDropdownHeader(child: Text('Dropdown Header')),
                             BsDropdownItem(child: Text('Action')),
                             BsDropdownItem(child: Text('Another Action')),
                             BsDropdownItem(child: Text('Something else here')),
-                            BsDropdownDivider(),
                             BsDropdownItem(child: Text('Separate link')),
                           ],
                         ),
@@ -354,6 +360,16 @@ class _MyAppState extends State<MyApp> {
                           label: Text('Primary'),
                         ),
                         dropdownDirection: Axis.horizontal,
+                        dropdownMenuStyle: BsDropdownMenuStyle(
+                          backgroundColor: Colors.red,
+                          boxShadow: [
+                            BoxShadow(
+                              color: Color(0xffd9d9d9),
+                              spreadRadius: 2.0,
+                              blurRadius: 5.0
+                            )
+                          ]
+                        ),
                         dropdownMenu: BsDropdownMenu(
                           children: [
                             BsDropdownItem(child: Text('Action')),
@@ -394,8 +410,18 @@ class _MyAppState extends State<MyApp> {
                         dropdownDirection: Axis.horizontal,
                         dropdownMenu: BsDropdownMenu(
                           children: [
-                            BsDropdownItem(child: Text('Action')),
-                            BsDropdownItem(child: Text('Another Action')),
+                            BsDropdownItem(
+                              child: Text('Action'),
+                              active: true,
+                              activeStyle: ButtonStyle(),
+                              activeTextStyle: TextStyle(),
+                            ),
+                            BsDropdownItem(
+                              child: Text('Another Action'),
+                              disabled: true,
+                              disabledStyle: ButtonStyle(),
+                              disabledTextStyle: TextStyle(),
+                            ),
                             BsDropdownItem(child: Text('Something else here')),
                             BsDropdownDivider(),
                             BsDropdownItem(child: Text('Separate link')),

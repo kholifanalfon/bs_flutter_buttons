@@ -1,10 +1,10 @@
-import 'package:bs_flutter_utils/bs_flutter_utils.dart';
 import 'package:flutter/material.dart';
 
 class BsDropdownMenuStyle {
 
   const BsDropdownMenuStyle({
     this.border,
+    this.backgroundColor = Colors.white,
     this.borderRadius = const BorderRadius.all(Radius.circular(5.0)),
     this.boxShadow = const [
       BoxShadow(
@@ -16,6 +16,8 @@ class BsDropdownMenuStyle {
   });
 
   final Border? border;
+
+  final Color backgroundColor;
 
   final BorderRadiusGeometry borderRadius;
 
