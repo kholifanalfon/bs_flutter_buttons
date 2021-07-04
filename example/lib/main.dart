@@ -13,6 +13,8 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
 
+  bool disabled = true;
+
   @override
   void initState() {
     super.initState();
@@ -38,12 +40,23 @@ class _MyAppState extends State<MyApp> {
                       child: Wrap(
                         children: [
                           BsButton(
-                            disabled: true,
+                            disabled: disabled,
                             margin: EdgeInsets.only(right: 10.0, bottom: 10.0),
                             onPressed: () {},
                             style: BsButtonStyle.primary,
                             prefixIcon: Icons.block,
                             label: Text('Primary'),
+                          ),
+                          BsButton(
+                            margin: EdgeInsets.only(right: 10.0, bottom: 10.0),
+                            onPressed: () {
+                              setState(() {
+                                disabled = disabled ? false : true;
+                              });
+                            },
+                            style: BsButtonStyle.primary,
+                            prefixIcon: Icons.block,
+                            label: Text('${disabled ? 'Enable' : 'Disabled'} Button'),
                           ),
                           BsButton(
                             margin: EdgeInsets.only(right: 10.0, bottom: 10.0),
@@ -108,7 +121,7 @@ class _MyAppState extends State<MyApp> {
                       child: Wrap(
                         children: [
                           BsButton(
-                            disabled: true,
+                            disabled: disabled,
                             margin: EdgeInsets.only(right: 10.0, bottom: 10.0),
                             onPressed: () {},
                             style: BsButtonStyle.outlinePrimary,

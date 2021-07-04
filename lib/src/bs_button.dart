@@ -85,8 +85,14 @@ class _BsButtonState extends State<BsButton> {
 
   late FocusNode _focusNode;
 
+  bool _onHover = false;
+
   VoidCallback? get _onPressed {
     if(!widget.disabled) {
+      updateState(() {
+        _backgroundColor = widget.disabled ? widget.style.disabledBackgroundColor : widget.style.backgroundColor;
+        _color = widget.disabled ? widget.style.disabledColor : widget.style.color;
+      });
       return () {
         _focusNode.requestFocus();
         widget.onPressed();
@@ -98,10 +104,8 @@ class _BsButtonState extends State<BsButton> {
 
   @override
   void initState() {
-    _backgroundColor = widget.disabled && widget.style.backgroundColor != Colors.transparent
-        ? widget.style.backgroundColor!.withOpacity(0.5)
-        : widget.style.backgroundColor!;
-    _color = !widget.disabled ? widget.style.color! : widget.style.color!.withOpacity(0.5);
+    _backgroundColor = widget.disabled ? widget.style.disabledBackgroundColor : widget.style.backgroundColor;
+    _color = widget.disabled ? widget.style.disabledColor : widget.style.color;
 
     _focusNode = widget.focusNode != null ? widget.focusNode! : FocusNode();
     _focusNode.addListener(_onFocus);
@@ -115,7 +119,10 @@ class _BsButtonState extends State<BsButton> {
   }
 
   void _onFocus() {
-    updateState(() {});
+    updateState(() {
+      _backgroundColor = widget.disabled ? widget.style.disabledBackgroundColor : widget.style.backgroundColor;
+      _color = widget.disabled ? widget.style.disabledColor : widget.style.color;
+    });
   }
 
   void updateState(Function function) {
@@ -156,17 +163,16 @@ class _BsButtonState extends State<BsButton> {
               focusNode: _focusNode,
               onTap: _onPressed,
               onHover: (hovered) {
-                if(hovered) {
+                _onHover = hovered;
+
+                if(hovered && !widget.disabled) {
                   if(widget.style.hoverBackgroundColor != null)
                     _backgroundColor = widget.style.hoverBackgroundColor!;
-
-                  if(widget.style.hoverColor != null)
-                    _color = widget.style.hoverColor!;
                 }
 
                 else {
-                  _backgroundColor = widget.style.backgroundColor!;
-                  _color = widget.style.color!;
+                  _backgroundColor = widget.disabled ? widget.style.disabledBackgroundColor : widget.style.backgroundColor;
+                  _color = widget.disabled ? widget.style.disabledColor : widget.style.color;
                 }
 
                 updateState(() {});
@@ -174,11 +180,12 @@ class _BsButtonState extends State<BsButton> {
               mouseCursor: widget.disabled ? SystemMouseCursors.noDrop : SystemMouseCursors.click,
               splashColor: _backgroundColor,
               hoverColor: Colors.black.withOpacity(0.15),
+              focusColor: widget.style.focusBackgroundColor,
               child: Container(
                 padding: widget.size!.padding,
                 child: DefaultTextStyle(
                   style: TextStyle(
-                    color: _color,
+                    color: _onHover ? widget.style.hoverColor : _focusNode.hasFocus ? widget.style.focusColor : _color,
                     fontSize: widget.size!.fontSize,
                     fontWeight: FontWeight.w100,
                   ),
@@ -191,7 +198,7 @@ class _BsButtonState extends State<BsButton> {
                         margin: widget.label == null ? EdgeInsets.zero : EdgeInsets.only(right: widget.size!.spaceLabelIcon),
                         child: Icon(widget.prefixIcon,
                           size: widget.size!.iconSize,
-                          color: !widget.disabled ? widget.style.color : widget.style.color!.withOpacity(0.5)
+                          color: _color
                         ),
                       ),
                       widget.label == null ? Container(width: 0) : Container(child: widget.label),
@@ -199,7 +206,7 @@ class _BsButtonState extends State<BsButton> {
                         margin: widget.label == null ? EdgeInsets.zero : EdgeInsets.only(left: widget.size!.spaceLabelIcon),
                         child: Icon(widget.suffixIcon,
                           size: widget.size!.iconSize,
-                          color: !widget.disabled ? widget.style.color : widget.style.color!.withOpacity(0.5)
+                          color: _color
                         ),
                       ),
                       widget.badge == null ? Container(width: 0) : Container(

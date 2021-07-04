@@ -3,18 +3,41 @@ import 'package:flutter/material.dart';
 
 /// Class for custom [BsButton]
 class BsButtonStyle {
+
+  final Color? _disabledBackgroundColor;
+
+  final Color? _disabledColor;
+
+  final Color? _disabledBorderColor;
+
+  final Color? _hoverColor;
+
+  final Color? _focusBackgroundColor;
+
+  final Color? _focusColor;
+
   // Constructor BsButtonStyle
   const BsButtonStyle({
-    this.color,
+    required this.color,
+    required this.backgroundColor,
     this.borderColor = Colors.transparent,
     this.borderRadius = BorderRadius.zero,
-    this.backgroundColor,
-    this.hoverColor,
-    this.hoverBackgroundColor
-  });
+    Color? hoverColor,
+    this.hoverBackgroundColor,
+    Color? disabledBackgroundColor,
+    Color? disabledColor,
+    Color? disabledBorderColor,
+    Color? focusBackgroundColor,
+    Color? focusColor,
+  }) : _disabledBackgroundColor = disabledBackgroundColor,
+    _disabledColor = disabledColor,
+    _disabledBorderColor = disabledBorderColor,
+    _hoverColor = hoverColor,
+    _focusBackgroundColor = focusBackgroundColor,
+    _focusColor = focusColor;
 
   /// define color of [BsButton]
-  final Color? color;
+  final Color  color;
 
   /// define borderColor of [BsButton]
   final Color borderColor;
@@ -23,11 +46,51 @@ class BsButtonStyle {
   final BorderRadiusGeometry borderRadius;
 
   /// define backgroundColor of [BsButton]
-  final Color? backgroundColor;
+  final Color backgroundColor;
 
   final Color? hoverBackgroundColor;
 
-  final Color? hoverColor;
+  Color get disabledBackgroundColor {
+    if(_disabledBackgroundColor == null)
+      return backgroundColor.withOpacity(0.5);
+
+    return _disabledBorderColor!;
+  }
+
+  Color get disabledColor {
+    if(_disabledColor == null)
+      return color.withOpacity(0.5);
+
+    return _disabledColor!;
+  }
+
+  Color get disabledBorderColor {
+    if(_disabledBorderColor == null)
+      return borderColor.withOpacity(0.5);
+
+    return _disabledBorderColor!;
+  }
+
+  Color get hoverColor {
+    if(_hoverColor == null)
+      return color;
+
+    return _hoverColor!;
+  }
+
+  Color get focusColor {
+    if(_focusColor == null)
+      return color;
+
+    return _focusColor!;
+  }
+
+  Color get focusBackgroundColor {
+    if(_focusBackgroundColor == null)
+      return backgroundColor;
+
+    return _focusBackgroundColor!;
+  }
 
   /// define style primary button
   static const BsButtonStyle primary = BsButtonStyle(
@@ -84,6 +147,8 @@ class BsButtonStyle {
       backgroundColor: Colors.white,
       hoverColor: Colors.white,
       hoverBackgroundColor: BsColor.primary,
+      focusColor: Colors.white,
+      focusBackgroundColor: BsColor.primary,
       borderRadius: BorderRadius.all(Radius.circular(3.0)));
 
   /// define style outlineSecondary button
@@ -93,6 +158,8 @@ class BsButtonStyle {
       backgroundColor: Colors.white,
       hoverColor: Colors.white,
       hoverBackgroundColor: BsColor.secondary,
+      focusColor: Colors.white,
+      focusBackgroundColor: BsColor.secondary,
       borderRadius: BorderRadius.all(Radius.circular(3.0)));
 
   /// define style outlineSuccess button
@@ -102,6 +169,8 @@ class BsButtonStyle {
       backgroundColor: Colors.white,
       hoverColor: Colors.white,
       hoverBackgroundColor: BsColor.success,
+      focusColor: Colors.white,
+      focusBackgroundColor: BsColor.success,
       borderRadius: BorderRadius.all(Radius.circular(3.0)));
 
   /// define style outlineDanger button
@@ -111,6 +180,8 @@ class BsButtonStyle {
       backgroundColor: Colors.white,
       hoverColor: Colors.white,
       hoverBackgroundColor: BsColor.danger,
+      focusColor: Colors.white,
+      focusBackgroundColor: BsColor.danger,
       borderRadius: BorderRadius.all(Radius.circular(3.0)));
 
   /// define style outlineWarning button
@@ -120,6 +191,8 @@ class BsButtonStyle {
       backgroundColor: Colors.white,
       hoverColor: Colors.white,
       hoverBackgroundColor: BsColor.warning,
+      focusColor: Colors.white,
+      focusBackgroundColor: BsColor.warning,
       borderRadius: BorderRadius.all(Radius.circular(3.0)));
 
   /// define style outlineInfo
@@ -129,6 +202,8 @@ class BsButtonStyle {
       backgroundColor: Colors.white,
       hoverColor: Colors.white,
       hoverBackgroundColor: BsColor.info,
+      focusColor: Colors.white,
+      focusBackgroundColor: BsColor.info,
       borderRadius: BorderRadius.all(Radius.circular(3.0)));
 
   /// define style outlineLight
@@ -138,6 +213,8 @@ class BsButtonStyle {
       backgroundColor: Colors.white,
       hoverColor: Colors.white,
       hoverBackgroundColor: BsColor.light,
+      focusColor: Colors.white,
+      focusBackgroundColor: BsColor.light,
       borderRadius: BorderRadius.all(Radius.circular(3.0)));
 
   /// define style outlineDark
@@ -147,5 +224,7 @@ class BsButtonStyle {
       backgroundColor: Colors.white,
       hoverColor: Colors.white,
       hoverBackgroundColor: BsColor.dark,
+      focusColor: Colors.white,
+      focusBackgroundColor: BsColor.dark,
       borderRadius: BorderRadius.all(Radius.circular(3.0)));
 }
