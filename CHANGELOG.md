@@ -1,8 +1,9 @@
-## 1.2.0
+## 1.2.1
 - Dropdown position bug fixed
 - Dropdown direction (left, right, top, bottom, horizontal, vertical)
 - On hover style
 - Shadow effect when button clicked
+- Disabled state fixed
 
 ## 1.1.3
 
