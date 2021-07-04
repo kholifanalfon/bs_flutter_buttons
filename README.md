@@ -1,4 +1,4 @@
-# bs_flutter_buttons
+# Bootstrap Flutter Buttons
 
 ![Alt text](https://raw.githubusercontent.com/kholifanalfon/bs_flutter_buttons/main/screenshot/example.png "Screenshot Example Buttons")
 

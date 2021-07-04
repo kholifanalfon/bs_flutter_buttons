@@ -2,7 +2,7 @@ import 'package:bs_flutter_buttons/bs_flutter_buttons.dart';
 import 'package:flutter/material.dart';
 
 /// Widget class of button
-class BsButton extends StatelessWidget {
+class BsButton extends StatefulWidget {
   /// Construct [BsButton]
   const BsButton({
     Key? key,
@@ -46,7 +46,7 @@ class BsButton extends StatelessWidget {
   final VoidCallback? onLongPressed;
 
   /// define style of [BsButton]
-  final BsButtonStyle? style;
+  final BsButtonStyle style;
 
   /// define size of [BsButton]
   final BsButtonSize? size;
@@ -73,86 +73,150 @@ class BsButton extends StatelessWidget {
   final MainAxisAlignment mainAxisAlignment;
 
   @override
+  State<BsButton> createState() {
+    return _BsButtonState();
+  }
+}
+
+class _BsButtonState extends State<BsButton> {
+
+  late Color _backgroundColor;
+  late Color _color;
+
+  late FocusNode _focusNode;
+
+  VoidCallback? get _onPressed {
+    if(!widget.disabled) {
+      return () {
+        _focusNode.requestFocus();
+        widget.onPressed();
+      };
+    }
+
+    return null;
+  }
+
+  @override
+  void initState() {
+    _backgroundColor = widget.disabled && widget.style.backgroundColor != Colors.transparent
+        ? widget.style.backgroundColor!.withOpacity(0.5)
+        : widget.style.backgroundColor!;
+    _color = !widget.disabled ? widget.style.color! : widget.style.color!.withOpacity(0.5);
+
+    _focusNode = widget.focusNode != null ? widget.focusNode! : FocusNode();
+    _focusNode.addListener(_onFocus);
+    super.initState();
+  }
+
+  @override
+  void dispose() {
+    _focusNode.dispose();
+    super.dispose();
+  }
+
+  void _onFocus() {
+    updateState(() {});
+  }
+
+  void updateState(Function function) {
+    if(mounted)
+      setState(() {
+        function();
+      });
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: crossAxisAlignment,
-      mainAxisAlignment: mainAxisAlignment,
+      crossAxisAlignment: widget.crossAxisAlignment,
+      mainAxisAlignment: widget.mainAxisAlignment,
       children: [
         Container(
-          width: width,
-          margin: margin,
-          child: TextButton(
-              style: TextButton.styleFrom(
-                backgroundColor:
-                disabled && style!.backgroundColor != Colors.transparent
-                    ? style!.backgroundColor!.withOpacity(0.5)
-                    : style!.backgroundColor,
-                padding: size!.padding,
-                minimumSize: size!.minimumSize,
-                shape: RoundedRectangleBorder(
-                  side: BorderSide(
-                    color: !disabled
-                        ? style!.borderColor
-                        : style!.borderColor.withOpacity(0.5),
+          width: widget.width,
+          margin: widget.margin,
+          decoration: BoxDecoration(
+            color: _backgroundColor,
+            border: Border.all(color: widget.disabled && widget.style.borderColor != Colors.transparent
+                ? widget.style.borderColor.withOpacity(0.5)
+                : widget.style.borderColor
+            ),
+            borderRadius: widget.style.borderRadius,
+            boxShadow: !_focusNode.hasFocus || widget.disabled ? [] : [
+              BoxShadow(
+                color: _backgroundColor.withOpacity(0.3),
+                spreadRadius: 3.0,
+                blurRadius: 0.0
+              )
+            ]
+          ),
+          clipBehavior: widget.clipBehavior,
+          child: Material(
+            child: InkWell(
+              autofocus: widget.autofocus,
+              focusNode: _focusNode,
+              onTap: _onPressed,
+              onHover: (hovered) {
+                if(hovered) {
+                  if(widget.style.hoverBackgroundColor != null)
+                    _backgroundColor = widget.style.hoverBackgroundColor!;
+
+                  if(widget.style.hoverColor != null)
+                    _color = widget.style.hoverColor!;
+                }
+
+                else {
+                  _backgroundColor = widget.style.backgroundColor!;
+                  _color = widget.style.color!;
+                }
+
+                updateState(() {});
+              },
+              mouseCursor: widget.disabled ? SystemMouseCursors.noDrop : SystemMouseCursors.click,
+              splashColor: _backgroundColor,
+              hoverColor: Colors.black.withOpacity(0.15),
+              child: Container(
+                padding: widget.size!.padding,
+                child: DefaultTextStyle(
+                  style: TextStyle(
+                    color: _color,
+                    fontSize: widget.size!.fontSize,
+                    fontWeight: FontWeight.w100,
                   ),
-                  borderRadius: style!.borderRadius,
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      widget.prefixIcon == null ? Container(width: 0) : Container(
+                        margin: widget.label == null ? EdgeInsets.zero : EdgeInsets.only(right: widget.size!.spaceLabelIcon),
+                        child: Icon(widget.prefixIcon,
+                          size: widget.size!.iconSize,
+                          color: !widget.disabled ? widget.style.color : widget.style.color!.withOpacity(0.5)
+                        ),
+                      ),
+                      widget.label == null ? Container(width: 0) : Container(child: widget.label),
+                      widget.suffixIcon == null ? Container(width: 0) : Container(
+                        margin: widget.label == null ? EdgeInsets.zero : EdgeInsets.only(left: widget.size!.spaceLabelIcon),
+                        child: Icon(widget.suffixIcon,
+                          size: widget.size!.iconSize,
+                          color: !widget.disabled ? widget.style.color : widget.style.color!.withOpacity(0.5)
+                        ),
+                      ),
+                      widget.badge == null ? Container(width: 0) : Container(
+                        margin: EdgeInsets.only(
+                          left: widget.prefixIcon != null ? widget. size!.spaceLabelIcon : 0.0,
+                          right: widget.suffixIcon != null ? widget.size!.spaceLabelIcon : 0.0
+                        ),
+                        child: widget.badge
+                      ),
+                    ],
+                  ),
                 ),
               ),
-              onPressed: () => !disabled ? onPressed() : {},
-              onLongPress: onLongPressed,
-              focusNode: focusNode,
-              clipBehavior: clipBehavior,
-              autofocus: autofocus,
-              child: DefaultTextStyle(
-                style: TextStyle(
-                  color:
-                  !disabled ? style!.color : style!.color!.withOpacity(0.5),
-                  fontSize: size!.fontSize,
-                  fontWeight: FontWeight.w100,
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    prefixIcon == null
-                        ? Container(width: 0)
-                        : Container(
-                      margin: label != null
-                          ? EdgeInsets.only(right: size!.spaceLabelIcon)
-                          : EdgeInsets.zero,
-                      child: Icon(prefixIcon,
-                          size: size!.iconSize,
-                          color: !disabled
-                              ? style!.color
-                              : style!.color!.withOpacity(0.5)),
-                    ),
-                    label == null
-                        ? Container(width: 0)
-                        : Container(child: label),
-                    badge == null
-                        ? Container(width: 0)
-                        : Container(
-                        margin: EdgeInsets.only(
-                            left: size!.spaceLabelIcon,
-                            right: suffixIcon == null
-                                ? size!.spaceLabelIcon
-                                : 0.0),
-                        child: badge),
-                    suffixIcon == null
-                        ? Container(width: 0)
-                        : Container(
-                      margin: label != null
-                          ? EdgeInsets.only(left: size!.spaceLabelIcon)
-                          : EdgeInsets.zero,
-                      child: Icon(suffixIcon,
-                          size: size!.iconSize,
-                          color: !disabled
-                              ? style!.color
-                              : style!.color!.withOpacity(0.5)),
-                    ),
-                  ],
-                ),
-              )),
-        )
+            ),
+            color: Colors.transparent,
+          ),
+        ),
       ],
     );
   }

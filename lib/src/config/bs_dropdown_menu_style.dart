@@ -8,9 +8,9 @@ class BsDropdownMenuStyle {
     this.borderRadius = const BorderRadius.all(Radius.circular(5.0)),
     this.boxShadow = const [
       BoxShadow(
-        color: Color(0xffd9d9d9),
+        color: Color(0xffd7d7d7),
         spreadRadius: 2.0,
-        blurRadius: 5.0
+        blurRadius: 8.0
       )
     ],
   });

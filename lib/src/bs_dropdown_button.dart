@@ -10,7 +10,7 @@ class BsDropdownButton extends StatefulWidget {
     Key? key,
     required this.toggleMenu,
     required this.dropdownMenu,
-    this.dropdownDirection = Axis.vertical,
+    this.dropdownDirection = BsDropdownDirection.vertical,
     this.focusNode,
     this.disabled = false,
     this.margin,
@@ -28,7 +28,7 @@ class BsDropdownButton extends StatefulWidget {
 
   final BsDropdownMenu dropdownMenu;
 
-  final Axis dropdownDirection;
+  final BsDropdownDirection dropdownDirection;
 
   final BsDropdownMenuStyle dropdownMenuStyle;
 
@@ -123,9 +123,11 @@ class _BsDropdownButtonState extends State<BsDropdownButton> {
         focusNode: _focusNode,
         onKey: _onKeyPressed,
         child: Container(
-          key: _key,
           margin: widget.margin,
-          child: widget.toggleMenu(this),
+          child: Container(
+            key: _key,
+            child: widget.toggleMenu(this),
+          ),
         ),
       ),
     );

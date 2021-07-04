@@ -1,4 +1,4 @@
-## 1.1.1
+## 1.1.3
 
 * Adding dropdown button
 * Adding dropdown item with disable and active style

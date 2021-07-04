@@ -31,7 +31,7 @@ class BsDropdownWrapper extends StatefulWidget {
 
   final BsDropdownMenuSize dropdownMenuSize;
 
-  final Axis dropdownDirection;
+  final BsDropdownDirection dropdownDirection;
 
 }
 
@@ -46,8 +46,6 @@ class _BsDropdownWrapperState extends State<BsDropdownWrapper> {
 
   double _overlayHeight = 0;
   double _overlayWidth = 0;
-  double _overlayMinHeight = 150;
-  double _overlayMinWidth = 150;
 
   bool _done = false;
 
@@ -57,19 +55,6 @@ class _BsDropdownWrapperState extends State<BsDropdownWrapper> {
     RenderBox renderBox = widget.containerKey.currentContext!.findRenderObject() as RenderBox;
     _size = renderBox.size;
     _offset = renderBox.localToGlobal(Offset.zero);
-
-    if(widget.dropdownDirection == Axis.vertical)
-      _overlayTop = _size.height + 5;
-
-    if(widget.dropdownDirection == Axis.horizontal)
-      _overlayLeft = _size.width - widget.containerMargin.right + 5;
-    else _overlayLeft = widget.containerMargin.left;
-
-    if(widget.dropdownMenuSize.minHeight != null)
-      _overlayMinHeight = widget.dropdownMenuSize.minHeight!;
-
-    if(widget.dropdownMenuSize.minWidth != null)
-      _overlayMinWidth = widget.dropdownMenuSize.minWidth!;
 
     super.initState();
   }
@@ -87,107 +72,127 @@ class _BsDropdownWrapperState extends State<BsDropdownWrapper> {
       /// Getting source size and offset from container toggle
       RenderBox renderBox = _key.currentContext!.findRenderObject() as RenderBox;
       Size size = renderBox.size;
-      Offset offset = renderBox.localToGlobal(Offset.zero);
       Size screenSize = MediaQuery.of(context).size;
 
-      /// Calculate container offset including margin
-      Offset containerOffset = Offset(_offset.dx + widget.containerMargin.left, _offset.dy + widget.containerMargin.top);
-
-      /// Validate overlay height if maxHeight has defined
-      /// if maxHeight not defined height will set dynamic
-      _overlayHeight = size.height;
-      if(widget.dropdownMenuSize.maxHeight != null
-          && size.height > widget.dropdownMenuSize.maxHeight!)
-        _overlayHeight = widget.dropdownMenuSize.maxHeight!;
-
-      /// Validate overlay height if maxWidth has defined
-      /// if minWidth not defined width will set dynamic
       _overlayWidth = size.width;
-      if(widget.dropdownMenuSize.maxWidth != null
-          && _size.width > widget.dropdownMenuSize.maxWidth!)
-        _overlayWidth = widget.dropdownMenuSize.maxWidth!;
+      _overlayHeight = size.height;
 
-      /// Set validate overlay size to Size class
-      Size overlayValidaSize = Size(_overlayWidth, _overlayHeight);
+      Offset overlayMaxPosition = Offset(_offset.dx + _size.width + _overlayWidth, _offset.dy + _size.height + _overlayHeight);
 
-      /// Set overlay size screen including offset screen
-      Size overlayScreenSize = Size(containerOffset.dx + overlayValidaSize.width, containerOffset.dy + overlayValidaSize.height);
+      double leftWidth = _offset.dx - 15;
+      if(widget.dropdownDirection == BsDropdownDirection.vertical)
+        leftWidth = _offset.dx + _size.width - 10;
 
-      /// When overlay screen height is more than screen height
-      if(overlayScreenSize.height > screenSize.height) {
+      double rightWidth = screenSize.width - (_offset.dx + _size.width + 15);
+      if(widget.dropdownDirection == BsDropdownDirection.vertical)
+        rightWidth = screenSize.width - _offset.dx - 10;
 
-        /// Calculate the possible overlay height
-        double resultHeight = screenSize.height - offset.dy - 10;
+      double topHeight = _offset.dy + _size.height - 10;
+      if(widget.dropdownDirection == BsDropdownDirection.vertical)
+        topHeight = _offset.dy - 15;
 
-        /// When result of calculate the possible overlay height
-        /// is less then minimum overlay height
-        if(resultHeight < _overlayMinHeight) {}
+      double bottomHeight = screenSize.height - (_offset.dy + 10);
+      if(widget.dropdownDirection == BsDropdownDirection.vertical)
+        bottomHeight = screenSize.height - (_offset.dy + _size.height + 15);
 
-        /// If result of calculate the possible overlay height
-        /// is more then minimum overlay height, set overlay height
-        /// to resultHeight
-        else
-          _overlayHeight = resultHeight;
+      if(widget.dropdownDirection == BsDropdownDirection.right) {
+        _overlayLeft = _size.width + widget.containerMargin.left + 5;
       }
 
-      /// When overlay screen height is more than screen width
-      if(overlayScreenSize.width > screenSize.width) {
+      else if(widget.dropdownDirection == BsDropdownDirection.bottom)
+        _overlayTop = _size.height + widget.containerMargin.top + 5;
 
-        /// Calculate the possible overlay width
-        double resultWidth = screenSize.width - offset.dx - 10;
+      else if(widget.dropdownDirection == BsDropdownDirection.left)
+        _overlayLeft = -(_overlayWidth + 5);
 
-        /// When result of calculate the possible overlay width
-        /// is less then minimum overlay width
-        if(resultWidth < _overlayMinWidth) {}
+      else if(widget.dropdownDirection == BsDropdownDirection.top)
+        _overlayTop = -(_overlayHeight + 5);
 
-        /// If result of calculate the possible overlay width
-        /// is more then minimum overlay width, set overlay width
-        /// to resultWidth
-        else
-          _overlayWidth = resultWidth;
-      }
+      else if(widget.dropdownDirection == BsDropdownDirection.horizontal
+        || widget.dropdownDirection == BsDropdownDirection.vertical) {
 
-      /// Update overlay validate size
-      overlayValidaSize = Size(_overlayWidth, _overlayHeight);
+        if(overlayMaxPosition.dx > screenSize.width) {
 
-      /// Update overlay size including offset
-      overlayScreenSize = Size(containerOffset.dx + _overlayWidth, containerOffset.dy + _overlayHeight);
+          if(leftWidth > rightWidth) {
 
-      /// When overlay screen height is more than screen width
-      /// Set overlay to top of container
-      if(overlayScreenSize.height > screenSize.height) {
+            if(leftWidth > widget.dropdownMenuSize.maxWidth)
+              _overlayWidth = widget.dropdownMenuSize.maxWidth;
 
-        /// Will set offset top of overlay to overlay height
-        ///
-        /// If container has margin top, will set offset top of overlay to overlay height + container margin
-        /// plus 5 (padding screen)
-        _overlayTop = -(overlayValidaSize.height - widget.containerMargin.top + 5);
+            else if(_overlayWidth > leftWidth)
+              _overlayWidth = leftWidth;
 
-        if(widget.dropdownDirection == Axis.horizontal) {
-          _overlayTop = -(overlayValidaSize.height - widget.containerMargin.top) + (_size.height - widget.containerMargin.top) + (_overlayHeight - size.height);
-          _overlayHeight = size.height;
+            if(widget.dropdownDirection == BsDropdownDirection.vertical)
+              _overlayLeft = widget.containerMargin.left - _overlayWidth + _size.width;
+
+            else if(widget.dropdownDirection == BsDropdownDirection.horizontal) {
+              _overlayLeft = widget.containerMargin.left - _overlayWidth - 5;
+            }
+          }
+
+          else {
+            if(rightWidth > widget.dropdownMenuSize.maxWidth)
+              _overlayWidth = widget.dropdownMenuSize.maxWidth;
+
+            else
+              _overlayWidth = rightWidth;
+
+            if(widget.dropdownDirection == BsDropdownDirection.vertical)
+              _overlayLeft = widget.containerMargin.left;
+
+            else if(widget.dropdownDirection == BsDropdownDirection.horizontal)
+              _overlayLeft = widget.containerMargin.left + _size.width + 5;
+          }
+
         }
 
-        /// When container offset y minus overlay height is less then 10 (padding screen)
-        /// Will set overlay height to maximal height
-        ///
-        /// if maximal height is not defined, sistem will calculate from
-        /// offset container + margin top container
-        else if(containerOffset.dy - overlayValidaSize.height <= 10)
-          _overlayHeight = _offset.dy + widget.containerMargin.top - 15;
+        else {
+          if(widget.dropdownDirection == BsDropdownDirection.vertical)
+            _overlayLeft = widget.containerMargin.left;
+          else if(widget.dropdownDirection == BsDropdownDirection.horizontal) {
+            _overlayLeft = widget.containerMargin.left + _size.width + 5;
+          }
+        }
 
+        if(overlayMaxPosition.dy > screenSize.height) {
+          if(bottomHeight > topHeight) {
 
-      }
+            if(bottomHeight > widget.dropdownMenuSize.maxHeight)
+              _overlayHeight = widget.dropdownMenuSize.maxHeight;
 
-      if(overlayScreenSize.width > screenSize.width) {
+            else
+              _overlayHeight = bottomHeight;
 
-        _overlayLeft = widget.containerMargin.left - overlayValidaSize.width - 5;
+            if(widget.dropdownDirection == BsDropdownDirection.vertical)
+              _overlayTop = widget.containerMargin.top + _size.height + 5;
 
-        if(containerOffset.dx - _overlayWidth <= 10) {
-          _overlayWidth = containerOffset.dx - 15;
-          _overlayLeft = widget.containerMargin.left - _overlayWidth - 5;
+            else if(widget.dropdownDirection == BsDropdownDirection.horizontal)
+              _overlayTop = widget.containerMargin.top;
+          }
+
+          else {
+
+            if(topHeight > widget.dropdownMenuSize.maxHeight)
+              _overlayHeight = widget.dropdownMenuSize.maxHeight;
+
+            else if(_overlayHeight > topHeight)
+              _overlayHeight = topHeight;
+
+            if(widget.dropdownDirection == BsDropdownDirection.vertical)
+              _overlayTop = widget.containerMargin.top - _overlayHeight - 5;
+
+            else if(widget.dropdownDirection == BsDropdownDirection.horizontal)
+              _overlayTop = widget.containerMargin.top - _overlayHeight + _size.height;
+          }
+        }
+
+        else {
+          if(widget.dropdownDirection == BsDropdownDirection.vertical)
+            _overlayTop = widget.containerMargin.top + _size.height + 5;
+          else if(widget.dropdownDirection == BsDropdownDirection.horizontal)
+            _overlayTop = widget.containerMargin.top;
         }
       }
+
 
       updateState(() {
         _done = true;
@@ -199,7 +204,8 @@ class _BsDropdownWrapperState extends State<BsDropdownWrapper> {
   Widget build(BuildContext context) {
     if(!_done) _checkHeight();
 
-    return GestureDetector(
+    return Opacity(
+      opacity: _done ? 1 : 0,
       child: Container(
         child: Stack(
           children: [
@@ -208,36 +214,38 @@ class _BsDropdownWrapperState extends State<BsDropdownWrapper> {
                 link: widget.layerLink,
                 showWhenUnlinked: false,
                 offset: Offset(_overlayLeft, _overlayTop),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Opacity(
-                      opacity: _done ? 1 : 0,
-                      child: Container(
-                        key: _key,
-                        height: _overlayHeight == 0 ? null : _overlayHeight,
-                        width: _overlayWidth == 0 ? null : _overlayWidth,
-                        decoration: BoxDecoration(
-                          color: widget.dropdownMenuStyle.backgroundColor,
-                          borderRadius: widget.dropdownMenuStyle.borderRadius,
-                          boxShadow: widget.dropdownMenuStyle.boxShadow,
-                          border: widget.dropdownMenuStyle.border,
-                        ),
-                        child: Scrollbar(child: SingleChildScrollView(
-                          child: Material(
-                            child: widget.dropdownMenu,
+                child: Scrollbar(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          key: _key,
+                          height: _overlayHeight == 0 ? null : _overlayHeight,
+                          width: _overlayWidth == 0 ? null : _overlayWidth,
+                          decoration: BoxDecoration(
+                            color: widget.dropdownMenuStyle.backgroundColor,
+                            borderRadius: widget.dropdownMenuStyle.borderRadius,
+                            boxShadow: widget.dropdownMenuStyle.boxShadow,
+                            border: widget.dropdownMenuStyle.border,
                           ),
-                        )),
-                      ),
-                    )
-                  ],
-                ),
+                          clipBehavior: Clip.hardEdge,
+                          child: SingleChildScrollView(
+                            child: Material(
+                              child: widget.dropdownMenu,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                )
               ),
             )
           ],
         ),
       ),
-      onTap: () {},
     );
   }
 
