@@ -43,7 +43,7 @@ class BsButtonStyle {
   final Color borderColor;
 
   /// define borderRadius of [BsButton]
-  final BorderRadiusGeometry borderRadius;
+  final BorderRadius borderRadius;
 
   /// define backgroundColor of [BsButton]
   final Color backgroundColor;

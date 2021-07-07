@@ -163,6 +163,16 @@ class _MyAppState extends State<MyApp> {
                             style: BsButtonStyle.outlineDark,
                             label: Text('Outline Dark'),
                           ),
+                          BsButton(
+                            margin: EdgeInsets.only(right: 10.0, bottom: 10.0),
+                            onPressed: () {},
+                            style: BsButtonStyle(
+                              borderRadius: BorderRadius.circular(50.0),
+                              backgroundColor: Colors.blue,
+                              color: Colors.white
+                            ),
+                            label: Text('Outline Dark'),
+                          ),
                         ],
                       ),
                     ),

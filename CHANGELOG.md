@@ -1,4 +1,4 @@
-## 1.2.1
+## 1.2.2
 - Dropdown position bug fixed
 - Dropdown direction (left, right, top, bottom, horizontal, vertical)
 - On hover style

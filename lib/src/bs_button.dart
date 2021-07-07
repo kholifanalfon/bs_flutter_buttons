@@ -181,6 +181,7 @@ class _BsButtonState extends State<BsButton> {
               splashColor: _backgroundColor,
               hoverColor: Colors.black.withOpacity(0.15),
               focusColor: widget.style.focusBackgroundColor,
+              borderRadius: widget.style.borderRadius,
               child: Container(
                 padding: widget.size!.padding,
                 child: DefaultTextStyle(
