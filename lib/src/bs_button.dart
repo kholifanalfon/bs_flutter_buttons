@@ -184,11 +184,20 @@ class _BsButtonState extends State<BsButton> {
               borderRadius: widget.style.borderRadius,
               child: Container(
                 padding: widget.size!.padding,
+                decoration: BoxDecoration(
+                  color: _focusNode.hasFocus ? widget.style.hoverBackgroundColor : Colors.transparent,
+                  boxShadow: !_focusNode.hasFocus || widget.disabled ? [] : [
+                    BoxShadow(
+                      color: _backgroundColor.withOpacity(0.3),
+                      spreadRadius: 3.0,
+                      blurRadius: 0.0
+                    )
+                  ]
+                ),
                 child: DefaultTextStyle(
                   style: TextStyle(
                     color: _onHover ? widget.style.hoverColor : _focusNode.hasFocus ? widget.style.focusColor : _color,
                     fontSize: widget.size!.fontSize,
-                    fontWeight: FontWeight.w100,
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,

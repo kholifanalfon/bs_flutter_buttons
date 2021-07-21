@@ -20,19 +20,19 @@ class BsDropdownItem extends StatelessWidget {
 
   final EdgeInsetsGeometry padding;
 
-  final ButtonStyle? style;
+  final Decoration? style;
 
   final TextStyle? textStyle;
 
   final bool disabled;
 
-  final ButtonStyle? disabledStyle;
+  final Decoration? disabledStyle;
 
   final TextStyle? disabledTextStyle;
 
   final bool active;
 
-  final ButtonStyle? activeStyle;
+  final Decoration? activeStyle;
 
   final TextStyle? activeTextStyle;
 
@@ -47,24 +47,24 @@ class BsDropdownItem extends StatelessWidget {
       color: Theme.of(context).textTheme.bodyText1!.color,
     ).merge(textStyle);
 
-    ButtonStyle? btnStyle = TextButton.styleFrom(
-      backgroundColor: Colors.white,
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.zero
-      )
-    ).merge(style);
+    Decoration btnStyle = BoxDecoration(
+      color: Colors.white,
+      borderRadius: BorderRadius.zero,
+    );
+    if(style != null)
+      btnStyle = style!;
 
     if(disabled) {
       txtStyle = TextStyle(
         color: Colors.grey,
       ).merge(disabledTextStyle);
 
-      btnStyle = TextButton.styleFrom(
-        backgroundColor: Color(0xffe7e7e7),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero
-        )
-      ).merge(disabledStyle);
+      btnStyle = BoxDecoration(
+        color: Color(0xffe7e7e7),
+        borderRadius: BorderRadius.zero,
+      );
+      if(disabledStyle != null)
+        btnStyle = disabledStyle!;
     }
 
     else if(active) {
@@ -72,31 +72,36 @@ class BsDropdownItem extends StatelessWidget {
         color: Colors.white,
       ).merge(activeTextStyle);
 
-      btnStyle = TextButton.styleFrom(
-        backgroundColor: Theme.of(context).accentColor,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.zero
-        )
-      ).merge(activeStyle);
+      btnStyle = BoxDecoration(
+        color: Theme.of(context).accentColor,
+        borderRadius: BorderRadius.zero,
+      );
+      if(activeStyle != null)
+        btnStyle = activeStyle!;
     }
 
     return LayoutBuilder(
       builder: (context, constraints) {
-        return TextButton(
-          style: btnStyle,
-          child: DefaultTextStyle(
-            style: txtStyle!,
-            child: Container(
-              width: constraints.maxWidth != double.infinity ? constraints.maxWidth : null,
-              padding: padding,
-              child: child,
+        return Container(
+          decoration: btnStyle,
+          child: Material(
+            color: Colors.transparent,
+            child: InkWell(
+              onTap: disabled ? null : () {
+                BsOverlay.removeAll();
+                if(onPressed != null)
+                  onPressed!();
+              },
+              child: DefaultTextStyle(
+                style: txtStyle!,
+                child: Container(
+                  width: constraints.maxWidth != double.infinity ? constraints.maxWidth : null,
+                  padding: padding,
+                  child: child,
+                ),
+              ),
             ),
           ),
-          onPressed: disabled ? null : () {
-            BsOverlay.removeAll();
-            if(onPressed != null)
-              onPressed!();
-          },
         );
       },
     );

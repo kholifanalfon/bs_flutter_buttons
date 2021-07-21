@@ -405,9 +405,9 @@ class _MyAppState extends State<MyApp> {
                             dropdownDirection: BsDropdownDirection.vertical,
                             dropdownMenu: BsDropdownMenu(
                               children: [
-                                BsDropdownItem(child: Text('Action')),
+                                BsDropdownItem(child: Text('Action'), active: true),
                                 BsDropdownItem(child: Text('Another Action')),
-                                BsDropdownItem(child: Text('Something else here')),
+                                BsDropdownItem(child: Text('Something else here'), disabled: true),
                                 BsDropdownDivider(),
                                 BsDropdownItem(child: Text('Separate link')),
                               ],
