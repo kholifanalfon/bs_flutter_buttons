@@ -1,4 +1,4 @@
-## 1.2.4
+## 1.2.5
 - Mobile style fixed
 - Dropdown position bug fixed
 - Dropdown direction (left, right, top, bottom, horizontal, vertical)

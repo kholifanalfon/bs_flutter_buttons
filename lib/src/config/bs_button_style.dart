@@ -210,10 +210,10 @@ class BsButtonStyle {
   static const BsButtonStyle outlineLight = BsButtonStyle(
       color: BsColor.light,
       borderColor: BsColor.light,
-      backgroundColor: Colors.white,
-      hoverColor: Colors.white,
+      backgroundColor: BsColor.dark,
+      hoverColor: BsColor.dark,
       hoverBackgroundColor: BsColor.light,
-      focusColor: Colors.white,
+      focusColor: BsColor.dark,
       focusBackgroundColor: BsColor.light,
       borderRadius: BorderRadius.all(Radius.circular(3.0)));
 

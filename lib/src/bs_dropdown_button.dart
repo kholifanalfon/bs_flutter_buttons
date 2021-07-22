@@ -117,16 +117,26 @@ class _BsDropdownButtonState extends State<BsDropdownButton> {
 
   @override
   Widget build(BuildContext context) {
-    return CompositedTransformTarget(
-      link: _layerLink,
-      child: RawKeyboardListener(
-        focusNode: _focusNode,
-        onKey: _onKeyPressed,
-        child: Container(
-          margin: widget.margin,
+    return WillPopScope(
+      onWillPop: () async {
+        bool returned = true;
+        if(isOpen) {
+          _close();
+          returned = false;
+        }
+        return returned;
+      },
+      child: CompositedTransformTarget(
+        link: _layerLink,
+        child: RawKeyboardListener(
+          focusNode: _focusNode,
+          onKey: _onKeyPressed,
           child: Container(
-            key: _key,
-            child: widget.toggleMenu(this),
+            margin: widget.margin,
+            child: Container(
+              key: _key,
+              child: widget.toggleMenu(this),
+            ),
           ),
         ),
       ),

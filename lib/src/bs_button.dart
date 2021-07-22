@@ -104,11 +104,11 @@ class _BsButtonState extends State<BsButton> {
 
   @override
   void initState() {
-    _backgroundColor = widget.disabled ? widget.style.disabledBackgroundColor : widget.style.backgroundColor;
-    _color = widget.disabled ? widget.style.disabledColor : widget.style.color;
-
     _focusNode = widget.focusNode != null ? widget.focusNode! : FocusNode();
     _focusNode.addListener(_onFocus);
+
+    _backgroundColor = widget.disabled ? widget.style.disabledBackgroundColor : widget.style.backgroundColor;
+    _color = widget.disabled ? widget.style.disabledColor : _focusNode.hasFocus ? widget.style.focusColor : widget.style.color;
     super.initState();
   }
 
@@ -121,7 +121,7 @@ class _BsButtonState extends State<BsButton> {
   void _onFocus() {
     updateState(() {
       _backgroundColor = widget.disabled ? widget.style.disabledBackgroundColor : widget.style.backgroundColor;
-      _color = widget.disabled ? widget.style.disabledColor : widget.style.color;
+      _color = widget.disabled ? widget.style.disabledColor : _focusNode.hasFocus ? widget.style.focusColor : widget.style.color;
     });
   }
 
@@ -158,6 +158,7 @@ class _BsButtonState extends State<BsButton> {
           ),
           clipBehavior: widget.clipBehavior,
           child: Material(
+            borderRadius: widget.style.borderRadius,
             child: InkWell(
               autofocus: widget.autofocus,
               focusNode: _focusNode,
@@ -172,7 +173,7 @@ class _BsButtonState extends State<BsButton> {
 
                 else {
                   _backgroundColor = widget.disabled ? widget.style.disabledBackgroundColor : widget.style.backgroundColor;
-                  _color = widget.disabled ? widget.style.disabledColor : widget.style.color;
+                  _color = widget.disabled ? widget.style.disabledColor : _focusNode.hasFocus ? widget.style.focusColor : widget.style.color;
                 }
 
                 updateState(() {});
@@ -186,6 +187,7 @@ class _BsButtonState extends State<BsButton> {
                 padding: widget.size!.padding,
                 decoration: BoxDecoration(
                   color: _focusNode.hasFocus ? widget.style.hoverBackgroundColor : Colors.transparent,
+                  borderRadius: widget.style.borderRadius,
                   boxShadow: !_focusNode.hasFocus || widget.disabled ? [] : [
                     BoxShadow(
                       color: _backgroundColor.withOpacity(0.3),
