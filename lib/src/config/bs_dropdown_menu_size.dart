@@ -4,7 +4,7 @@ class BsDropdownMenuSize {
     this.maxWidth = double.infinity,
     this.minWidth = 150,
     this.maxHeight = double.infinity,
-    this.minHeight = 150,
+    this.minHeight = 0,
   });
 
   final double maxWidth;

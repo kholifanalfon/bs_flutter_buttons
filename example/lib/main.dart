@@ -307,6 +307,9 @@ class _MyAppState extends State<MyApp> {
                               label: Text('Bottom'),
                             ),
                             dropdownDirection: BsDropdownDirection.bottom,
+                            dropdownMenuSize: BsDropdownMenuSize(
+                              minWidth: 500,
+                            ),
                             dropdownMenu: BsDropdownMenu(
                               children: [
                                 BsDropdownItem(child: Text('Action')),

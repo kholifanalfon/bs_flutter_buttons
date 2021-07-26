@@ -77,6 +77,21 @@ class _BsDropdownWrapperState extends State<BsDropdownWrapper> {
       _overlayWidth = size.width;
       _overlayHeight = size.height;
 
+      if(_overlayWidth < widget.dropdownMenuSize.minWidth)
+        _overlayWidth = widget.dropdownMenuSize.minWidth;
+
+      else if(widget.dropdownMenuSize.maxWidth != double.infinity
+          && _overlayWidth > widget.dropdownMenuSize.maxWidth)
+        _overlayWidth = widget.dropdownMenuSize.maxWidth;
+
+      if(widget.dropdownMenuSize.minHeight > 0
+          && _overlayHeight < widget.dropdownMenuSize.maxHeight)
+        _overlayHeight = widget.dropdownMenuSize.maxHeight;
+
+      else if(widget.dropdownMenuSize.maxHeight != double.infinity
+          && _overlayHeight > widget.dropdownMenuSize.maxHeight)
+        _overlayHeight = widget.dropdownMenuSize.maxHeight;
+
       Offset overlayMaxPosition = Offset(_offset.dx + _size.width + _overlayWidth, _offset.dy + _size.height + _overlayHeight);
 
       double leftWidth = _offset.dx - 15;
