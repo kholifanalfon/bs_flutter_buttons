@@ -1,10 +1,8 @@
 import 'package:bs_flutter_buttons/bs_flutter_buttons.dart';
-import 'package:bs_flutter_buttons/bs_flutter_buttons.dart';
-import 'package:bs_flutter_buttons/bs_flutter_buttons.dart';
 import 'package:flutter/material.dart';
 
 /// Class to handle all overlay of [BsDropdownMenu]
-class BsOverlay {
+class OverlayDropdownButton {
   /// define overlay entry of [BsDropdownMenu]
   static List<BsOverlayEntry> overlays = [];
 

@@ -1,5 +1,4 @@
 import 'package:bs_flutter_buttons/bs_flutter_buttons.dart';
-import 'package:bs_flutter_buttons/src/utils/bs_overlay.dart';
 import 'package:bs_flutter_buttons/src/widgets/bs_dropdown_wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -88,9 +87,9 @@ class _BsDropdownButtonState extends State<BsDropdownButton> {
   }
 
   void _open() {
-    BsOverlay.removeAll();
+    OverlayDropdownButton.removeAll();
 
-    BsOverlayEntry overlayEntry = BsOverlay.add(OverlayEntry(builder: (context) => BsDropdownWrapper(
+    BsOverlayEntry overlayEntry = OverlayDropdownButton.add(OverlayEntry(builder: (context) => BsDropdownWrapper(
       containerKey: _key,
       containerMargin: widget.margin != null ? widget.margin! : EdgeInsets.zero,
       layerLink: _layerLink,
@@ -109,7 +108,7 @@ class _BsDropdownButtonState extends State<BsDropdownButton> {
   }
 
   void _close() {
-    BsOverlay.removeAll();
+    OverlayDropdownButton.removeAll();
 
     _focusNode.unfocus();
     updateState(() => isOpen = false);

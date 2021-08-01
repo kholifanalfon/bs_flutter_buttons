@@ -1,4 +1,4 @@
-import 'package:bs_flutter_buttons/src/utils/bs_overlay.dart';
+import 'package:bs_flutter_buttons/bs_flutter_buttons.dart';
 import 'package:flutter/material.dart';
 
 class BsDropdownItem extends StatelessWidget {
@@ -88,7 +88,7 @@ class BsDropdownItem extends StatelessWidget {
             color: Colors.transparent,
             child: InkWell(
               onTap: disabled ? null : () {
-                BsOverlay.removeAll();
+                OverlayDropdownButton.removeAll();
                 if(onPressed != null)
                   onPressed!();
               },

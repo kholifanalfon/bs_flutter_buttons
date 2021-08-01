@@ -1,5 +1,6 @@
 export 'src/utils/bs_dropdown_direction.dart';
 
+export 'src/utils/overlay_dropdown_button.dart';
 export 'src/config/bs_button_size.dart';
 export 'src/config/bs_button_style.dart';
 
