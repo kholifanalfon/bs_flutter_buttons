@@ -76,6 +76,7 @@ class _MyAppState extends State<MyApp> {
                                 label: Text('Success'),
                               ),
                               BsButton(
+                                width: 900,
                                 margin: EdgeInsets.only(right: 10.0, bottom: 10.0),
                                 onPressed: () {},
                                 style: BsButtonStyle.danger,

@@ -1,6 +1,6 @@
 name: bs_flutter_buttons
 description: Bootstrap’s custom button styles for actions in forms, dialogs, and more with support for multiple sizes, states, and more.
-version: 1.2.7
+version: 1.2.8
 homepage: https://github.com/kholifanalfon/bs_flutter_buttons.git
 
 environment:

@@ -20,8 +20,8 @@ class BsButton extends StatefulWidget {
     this.disabled = false,
     this.focusNode,
     this.clipBehavior = Clip.none,
-    this.crossAxisAlignment = CrossAxisAlignment.start,
-    this.mainAxisAlignment = MainAxisAlignment.start,
+    this.crossAxisAlignment = CrossAxisAlignment.center,
+    this.mainAxisAlignment = MainAxisAlignment.center,
   }) : super(key: key);
 
   /// define width of [BsButton]
@@ -135,8 +135,6 @@ class _BsButtonState extends State<BsButton> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: widget.crossAxisAlignment,
-      mainAxisAlignment: widget.mainAxisAlignment,
       children: [
         Container(
           width: widget.width,
@@ -203,8 +201,8 @@ class _BsButtonState extends State<BsButton> {
                   ),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.start,
+                    crossAxisAlignment: widget.crossAxisAlignment,
+                    mainAxisAlignment: widget.mainAxisAlignment,
                     children: [
                       widget.prefixIcon == null ? Container(width: 0) : Container(
                         margin: widget.label == null ? EdgeInsets.zero : EdgeInsets.only(right: widget.size!.spaceLabelIcon),
